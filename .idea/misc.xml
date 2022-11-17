@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/drawable/card_button_sell_cambio_screen.xml" value="0.2065" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/drawable/card_buttons_cambio_screen.xml" value="0.173" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/drawable/card_quantidade_cambio_screen.xml" value="0.2005" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/drawable/fundo_moedas.xml" value="0.2005" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/drawable/fundo_moedas_cambio_screen.xml" value="0.21" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/drawable/ic_launcher_background.xml" value="0.21" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/font/arial_black.xml" value="0.303125" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/font/font_arial.xml" value="0.29743589743589743" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/font/helvetica.xml" value="0.29743589743589743" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/font/open_sans.xml" value="0.29743589743589743" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/activity_main.xml" value="0.25885416666666666" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/buy_and_sell_screen.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/cambio_screen.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/card_currencies_home_screen.xml" value="0.2101851851851852" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/card_moeda.xml" value="0.271875" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/compra_e_venda.xml" value="0.22037037037037038" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/home_screen.xml" value="0.275" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/toolbar_buy_and_sell_screen.xml" value="0.271875" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/toolbar_cambio_screen.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/toolbar_home.xml" value="0.271875" />
+        <entry key="..\:/Users/Alexssander/AndroidStudioProjects/Moedas/app/src/main/res/layout/toolbar_home_screen.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/drawable/button_back_cambio_screen.xml" value="0.1" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/drawable/card_button_buy_and_sell_screen.xml" value="0.1375" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/drawable/card_buttons_cambio_screen.xml" value="0.1375" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/layout/buy_and_sell_screen.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/layout/cambio_screen.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/layout/card_currencies_home_screen.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/layout/home_screen.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/layout/toolbar_buy_and_sell_screen.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/alexssandera/Documents/Moedas/app/src/main/res/layout/toolbar_cambio_screen.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
