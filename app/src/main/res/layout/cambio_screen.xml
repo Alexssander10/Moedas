@@ -124,7 +124,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        android:autofillHints=""/>
 
     <TextView
         android:id="@+id/text_SaldoDisponivelCambioScreen"
@@ -164,10 +164,9 @@
         android:layout_marginTop="584dp"
         android:layout_marginEnd="200dp"
         android:layout_marginBottom="40dp"
-        android:alpha=".5"
         android:background="@drawable/card_buttons_cambio_screen"
         android:text="@string/vender"
-        android:textColor="#BCAAA4"
+        android:textColor="@color/white"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

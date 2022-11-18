@@ -9,10 +9,10 @@ import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-class TestViewModelMoedas : BaseTest() {
+class TestViewModelCurrencies : BaseTest() {
 
-    var api = mockk<RepositoryCurrencies>(relaxUnitFun = true)
-    var viewModel: ViewModelCurrency = ViewModelCurrency(api)
+    private var api = mockk<RepositoryCurrencies>(relaxUnitFun = true)
+    private var viewModel: ViewModelCurrency = ViewModelCurrency(api)
 
 
     @Test

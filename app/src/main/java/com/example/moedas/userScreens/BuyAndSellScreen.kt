@@ -1,10 +1,12 @@
 package com.example.moedas.userScreens
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.widget.TextViewCompat
 import com.example.moedas.R
 import com.example.moedas.model.ModelCurrency
 import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.buyOrSell
@@ -14,9 +16,9 @@ import java.math.RoundingMode
 
 class BuyAndSellScreen : AppCompatActivity() {
 
-    private lateinit var txtV_congratulations: TextView
-    private lateinit var btn_Home_Screen: Button
-    private lateinit var btn_Cambio_Screen: Button
+    private lateinit var successfullyTransactionMessageTxt: TextView
+    private lateinit var homeScreenBtn: Button
+    private lateinit var cambioScreenBtn: Button
     private var cambioMoedas: ModelCurrency? = null
     private val congratulationMessage = StringBuilder()
     private lateinit var txtToolbar: TextView
@@ -29,9 +31,11 @@ class BuyAndSellScreen : AppCompatActivity() {
         linkID()
         toolbar()
         finishTransaction()
+        textViewConfigs()
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun toolbar(){
         txtToolbar = findViewById(R.id.txt_toolbar_BuyAndSell)
         val toolbarStatus = intent.getBooleanExtra("Compra", true)
@@ -43,9 +47,13 @@ class BuyAndSellScreen : AppCompatActivity() {
     }
 
     private fun linkID() {
-        txtV_congratulations = findViewById(R.id.txT_Congratulation)
-        btn_Home_Screen = findViewById(R.id.btn_back_home_screen)
-        btn_Cambio_Screen = findViewById(R.id.btn_back_Buy_And_Sell_Screen)
+        successfullyTransactionMessageTxt = findViewById(R.id.txT_Congratulation)
+        homeScreenBtn = findViewById(R.id.btn_back_home_screen)
+        cambioScreenBtn = findViewById(R.id.btn_back_Buy_And_Sell_Screen)
+    }
+
+    private fun textViewConfigs(){
+        TextViewCompat.setAutoSizeTextTypeWithDefaults(successfullyTransactionMessageTxt,1)
     }
 
     private fun finishTransaction() {
@@ -54,13 +62,13 @@ class BuyAndSellScreen : AppCompatActivity() {
         cambioMoedas = intent.getSerializableExtra("coin") as? ModelCurrency
         cambioMoedas.let { moeda ->
             congratulationMessage.let {
-                it.append(txtV_congratulations.text)
+                it.append(successfullyTransactionMessageTxt.text)
                     .append("Parabéns \n Você acabou de $buyOrSell\n")
                     .append("$quantidade ${moeda?.isoMoeda} - ${moeda?.nameCurrency},\n")
                     .append("totalizando \n")
-                    .append("R$ ${totalTransaction.toBigDecimal().setScale(2, RoundingMode.UP)}")
+                    .append("R$ ${totalTransaction.toBigDecimal().setScale(2, RoundingMode.HALF_UP)}")
                     .toString()
-                txtV_congratulations.text = it
+                successfullyTransactionMessageTxt.text = it
             }
             buttonBackToHome(moeda)
             buttonBackToCambio()
@@ -68,8 +76,8 @@ class BuyAndSellScreen : AppCompatActivity() {
     }
 
     private fun buttonBackToHome(cambioMoedas: ModelCurrency?){
-        btn_Home_Screen.contentDescription = "Retorno à Home Screen"
-        btn_Home_Screen.setOnClickListener {
+        homeScreenBtn.contentDescription = "Retorno à Home Screen"
+        homeScreenBtn.setOnClickListener {
             Intent(this, HomeScreen::class.java).let {
                 it.putExtra("valueCoin", cambioMoedas)
                 finish()
@@ -79,8 +87,8 @@ class BuyAndSellScreen : AppCompatActivity() {
     }
 
     private fun buttonBackToCambio(){
-        btn_Cambio_Screen.contentDescription = "Retorno à Cambio Screen"
-        btn_Cambio_Screen.setOnClickListener {
+        cambioScreenBtn.contentDescription = "Retorno à Cambio Screen"
+        cambioScreenBtn.setOnClickListener {
             finish()
         }
     }

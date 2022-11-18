@@ -6,7 +6,6 @@ import org.junit.Before
 import org.junit.Rule
 
 open class BaseTest {
-
         @get:Rule
         val rule = InstantTaskExecutorRule()
         @Before

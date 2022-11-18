@@ -11,13 +11,13 @@ import com.example.moedas.R
 import com.example.moedas.viewModel.ViewModelCurrency
 import com.example.moedas.adapter.AdapterCurrency
 import com.example.moedas.repository.RepositoryCurrencies
-import com.example.moedas.viewModel.viewModelFactory
+import com.example.moedas.viewModel.ViewModelFactory
 
 class HomeScreen : AppCompatActivity() {
 
-    private lateinit var recyclerViewMoedas: RecyclerView
+    private lateinit var recyclerViewCurrencies: RecyclerView
     private lateinit var viewModelCurrency: ViewModelCurrency
-    private val moedaAdapter by lazy {
+    private val currencyAdapter by lazy {
         AdapterCurrency()
     }
 
@@ -25,10 +25,10 @@ class HomeScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen)
 
-        viewModelCurrency = ViewModelProvider(this, viewModelFactory(RepositoryCurrencies()))[ViewModelCurrency::class.java]
+        viewModelCurrency = ViewModelProvider(this, ViewModelFactory(RepositoryCurrencies()))[ViewModelCurrency::class.java]
 
         viewModelCurrency.coinList.observe(this) {
-            moedaAdapter.refresh(it)
+            currencyAdapter.refresh(it)
             recyclerViewConfig()
         }
 
@@ -41,16 +41,15 @@ class HomeScreen : AppCompatActivity() {
     }
 
     private fun recyclerViewConfig() {
-        recyclerViewMoedas = findViewById(R.id.currencies_Rc_Home_Screen)
-        recyclerViewMoedas.layoutManager = LinearLayoutManager(this)
-        recyclerViewMoedas.adapter = moedaAdapter
-        moedaAdapter.onClickActionCard = {
+        recyclerViewCurrencies = findViewById(R.id.currencies_Rc_Home_Screen)
+        recyclerViewCurrencies.layoutManager = LinearLayoutManager(this)
+        recyclerViewCurrencies.adapter = currencyAdapter
+        currencyAdapter.onClickActionCard = {
             Intent(this, CambioScreen::class.java).apply {
                 putExtra("coinData", it)
                 startActivity(this)
             }
         }
     }
-
 
 }

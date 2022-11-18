@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.moedas.repository.RepositoryCurrencies
 
-class viewModelFactory constructor (private val repository: RepositoryCurrencies) :
+@Suppress("UNCHECKED_CAST")
+class ViewModelFactory constructor (private val repository: RepositoryCurrencies) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

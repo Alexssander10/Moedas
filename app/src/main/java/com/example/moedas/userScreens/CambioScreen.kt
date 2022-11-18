@@ -18,23 +18,22 @@ import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.bindValues
 import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.buyOrSell
 import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.walletValue
 import com.example.moedas.viewModel.ViewModelCurrency
-import com.example.moedas.viewModel.viewModelFactory
+import com.example.moedas.viewModel.ViewModelFactory
 import java.math.RoundingMode
 
 class CambioScreen : AppCompatActivity() {
-
-    private var cambioMoeda: ModelCurrency? = null
+    private var cambioCurrencyModel: ModelCurrency? = null
     private lateinit var coinListViewModel: ViewModelCurrency
-    private lateinit var currencyTxV: TextView
-    private lateinit var variacaoTxt: TextView
-    private lateinit var compraTxt: TextView
-    private lateinit var vendaTxt: TextView
-    private lateinit var coinInCashAvailableTxV: TextView
-    private lateinit var balanceAvailableInCashTxV: TextView
-    private lateinit var amountedT: EditText
-    private lateinit var btn_Back_Cambio_Screen: Button
-    private lateinit var btn_Buy_Cambio_Screen: Button
-    private lateinit var btn_Sell_Cambio_Screen: Button
+    private lateinit var currencyTxv: TextView
+    private lateinit var priceVariationTxt: TextView
+    private lateinit var currencyPurchaseValueTxt: TextView
+    private lateinit var currencySaleValueTxt: TextView
+    private lateinit var coinInCashAvailableTxv: TextView
+    private lateinit var balanceAvailableInCashTxv: TextView
+    private lateinit var amountEdt: EditText
+    private lateinit var backCambioScreenBtn: Button
+    private lateinit var buyCambioScreenBtn: Button
+    private lateinit var sellCambioScreenBtn: Button
     private var quantidade: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,17 +50,17 @@ class CambioScreen : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        amountedT.text?.clear()
+        amountEdt.text?.clear()
         updateCurrencie()
-        cambioMoeda?.let { informationOnScreen(it) }
-        cambioMoeda?.let { setOnChangedListener(it)
+        cambioCurrencyModel?.let { informationOnScreen(it) }
+        cambioCurrencyModel?.let { setOnChangedListener(it)
         searchSelectedCurrencie()
         }
     }
 
     private fun updateCurrencie() {
-        cambioMoeda = intent.getSerializableExtra("coinData") as? ModelCurrency
-        cambioMoeda?.let { valueCoin ->
+        cambioCurrencyModel = intent.getSerializableExtra("coinData") as? ModelCurrency
+        cambioCurrencyModel?.let { valueCoin ->
             informationOnScreen(valueCoin)
         }
     }
@@ -70,13 +69,13 @@ class CambioScreen : AppCompatActivity() {
         coinListViewModel =
             ViewModelProvider(
                 this,
-                viewModelFactory(RepositoryCurrencies())
+                ViewModelFactory(RepositoryCurrencies())
             )[ViewModelCurrency::class.java]
     }
 
     private fun searchSelectedCurrencie() {
-        cambioMoeda = intent.getSerializableExtra("coinData") as? ModelCurrency
-        cambioMoeda.let { coin ->
+        cambioCurrencyModel = intent.getSerializableExtra("coinData") as? ModelCurrency
+        cambioCurrencyModel.let { coin ->
             if (coin != null) {
                 informationOnScreen(coin)
                 setOnChangedListener(coin)
@@ -87,27 +86,27 @@ class CambioScreen : AppCompatActivity() {
     }
 
     private fun linkID() {
-        currencyTxV = findViewById(R.id.nameCurrency)
-        variacaoTxt = findViewById(R.id.textVariation)
-        compraTxt = findViewById(R.id.textBuyCurrency)
-        vendaTxt = findViewById(R.id.textSellCurrency)
-        coinInCashAvailableTxV = findViewById(R.id.text_ValorEmCaixaCambioScreen)
-        balanceAvailableInCashTxV = findViewById(R.id.text_SaldoDisponivelCambioScreen)
-        btn_Back_Cambio_Screen = findViewById(R.id.btn_back_cambio_screen)
-        btn_Buy_Cambio_Screen = findViewById(R.id.btn_Buy_Cambio_Screen)
-        btn_Sell_Cambio_Screen = findViewById(R.id.btn_Sell_Cambio_Screen)
-        amountedT = findViewById(R.id.edT_Quantidade)
+        currencyTxv = findViewById(R.id.nameCurrency)
+        priceVariationTxt = findViewById(R.id.textVariation)
+        currencyPurchaseValueTxt = findViewById(R.id.textBuyCurrency)
+        currencySaleValueTxt = findViewById(R.id.textSellCurrency)
+        coinInCashAvailableTxv = findViewById(R.id.text_ValorEmCaixaCambioScreen)
+        balanceAvailableInCashTxv = findViewById(R.id.text_SaldoDisponivelCambioScreen)
+        backCambioScreenBtn = findViewById(R.id.btn_back_cambio_screen)
+        buyCambioScreenBtn = findViewById(R.id.btn_Buy_Cambio_Screen)
+        sellCambioScreenBtn = findViewById(R.id.btn_Sell_Cambio_Screen)
+        amountEdt = findViewById(R.id.edT_Quantidade)
     }
 
     private fun returnSetOnClickListener() {
-        btn_Back_Cambio_Screen.setOnClickListener {
+        backCambioScreenBtn.setOnClickListener {
             finish()
         }
     }
 
     private fun setOnChangedListener(cambioMoedas: ModelCurrency) {
 
-        amountedT.doOnTextChanged { text, _, _, _ ->
+        amountEdt.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotBlank()) {
                 quantidade = text.toString().toInt()
                 if (quantidade > 0) {
@@ -123,47 +122,47 @@ class CambioScreen : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun informationOnScreen(cambioMoedas: ModelCurrency) {
-        if (cambioMoeda?.isoValueCurrencie == 0) {
+        if (cambioCurrencyModel?.isoValueCurrencie == 0) {
             bindValues(cambioMoedas)
         }
         coloV()
-        currencyTxV.text = "${cambioMoedas.isoMoeda} - ${cambioMoedas.nameCurrency}"
-        variacaoTxt.text = "${
-            cambioMoedas.currencyVariation.toString().toBigDecimal().setScale(2, RoundingMode.UP)
+        currencyTxv.text = "${cambioMoedas.isoMoeda} - ${cambioMoedas.nameCurrency}"
+        priceVariationTxt.text = "${
+            cambioMoedas.currencyVariation.toString().toBigDecimal().setScale(2, RoundingMode.HALF_UP)
         }%"
         if (cambioMoedas.currencyPurchase == null) {
-            compraTxt.text = "Compra: R$ 0.00"
+            currencyPurchaseValueTxt.text = "Compra: R$ 0.00"
         } else {
-            compraTxt.text = "Compra: R$" +
+            currencyPurchaseValueTxt.text = "Compra: R$" +
                     "${
                         cambioMoedas.currencyPurchase.toString().toBigDecimal()
-                            .setScale(2, RoundingMode.UP)
+                            .setScale(2, RoundingMode.HALF_UP)
                     }"
         }
         if (cambioMoedas.currencySaleValue == null) {
-            vendaTxt.text = "Venda: R$ 0.00"
+            currencySaleValueTxt.text = "Venda: R$ 0.00"
         } else {
-            vendaTxt.text = "Venda: R$" + "${
+            currencySaleValueTxt.text = "Venda: R$" + "${
                 cambioMoedas.currencySaleValue.toString().toBigDecimal()
-                    .setScale(2, RoundingMode.UP)
+                    .setScale(2, RoundingMode.HALF_UP)
             }"
         }
-        balanceAvailableInCashTxV.text = "Saldo disponível: R$" +
+        balanceAvailableInCashTxv.text = "Saldo disponível: R$" +
                 "${
                     walletValue.toString().toBigDecimal()
-                        .setScale(2, RoundingMode.UP)
+                        .setScale(2, RoundingMode.HALF_UP)
                 }"
-        coinInCashAvailableTxV.text =
+        coinInCashAvailableTxv.text =
             "${cambioMoedas.isoValueCurrencie} ${cambioMoedas.nameCurrency} em caixa"
     }
 
     private fun coloV() {
-        if (cambioMoeda?.currencyVariation!! < 0) {
-            variacaoTxt.setTextColor(Color.RED)
-        } else if (cambioMoeda?.currencyVariation!! > 0) {
-            variacaoTxt.setTextColor(Color.GREEN)
+        if (cambioCurrencyModel?.currencyVariation!! < 0) {
+            priceVariationTxt.setTextColor(Color.RED)
+        } else if (cambioCurrencyModel?.currencyVariation!! > 0) {
+            priceVariationTxt.setTextColor(Color.GREEN)
         } else {
-            variacaoTxt.setTextColor(Color.WHITE)
+            priceVariationTxt.setTextColor(Color.WHITE)
         }
     }
 
@@ -171,10 +170,10 @@ class CambioScreen : AppCompatActivity() {
         if (cambioMoedas.currencyPurchase != null) {
             if (quantidade * cambioMoedas.currencyPurchase <= walletValue) {
                 setBuyButton(true)
-                btn_Buy_Cambio_Screen.contentDescription = "Botão Buy habilitado"
+                buyCambioScreenBtn.contentDescription = "Botão Buy habilitado"
             } else {
                 setBuyButton(false)
-                btn_Buy_Cambio_Screen.contentDescription =
+                buyCambioScreenBtn.contentDescription =
                     "Botão Buy desabilitado devido ao saldo para esta operação"
             }
         }
@@ -185,17 +184,17 @@ class CambioScreen : AppCompatActivity() {
         if (cambioMoedas.currencySaleValue != null) {
             if (quantidade <= cambioMoedas.isoValueCurrencie) {
                 setSellButton(true)
-                btn_Sell_Cambio_Screen.contentDescription = "Botão Sell habilitado"
+                sellCambioScreenBtn.contentDescription = "Botão Sell habilitado"
             } else {
                 setSellButton(false)
-                btn_Sell_Cambio_Screen.contentDescription =
+                sellCambioScreenBtn.contentDescription =
                     "Botão Sell desabilitado, moedas insuficientes"
             }
         }
     }
 
     private fun configBuyButton(cambioMoedas: ModelCurrency) {
-        btn_Buy_Cambio_Screen.setOnClickListener {
+        buyCambioScreenBtn.setOnClickListener {
             cambioMoedas.isoValueCurrencie += quantidade
             afterLinkingValues(cambioMoedas)
             val totalPurchaseAmount = quantidade * cambioMoedas.currencyPurchase!!
@@ -212,7 +211,7 @@ class CambioScreen : AppCompatActivity() {
     }
 
     private fun configSellButton(cambioMoedas: ModelCurrency) {
-        btn_Sell_Cambio_Screen.setOnClickListener {
+        sellCambioScreenBtn.setOnClickListener {
             cambioMoedas.isoValueCurrencie -= quantidade
             afterLinkingValues(cambioMoedas)
             val totalSalesAmount = quantidade * cambioMoedas.currencySaleValue!!
@@ -229,20 +228,20 @@ class CambioScreen : AppCompatActivity() {
     }
 
     private fun setBuyButton(boolean: Boolean) {
-        btn_Buy_Cambio_Screen.isEnabled = boolean
+        buyCambioScreenBtn.isEnabled = boolean
         if (boolean) {
-            btn_Buy_Cambio_Screen.alpha = 1F
+            buyCambioScreenBtn.alpha = 1F
         } else {
-            btn_Buy_Cambio_Screen.alpha = 0.5F
+            buyCambioScreenBtn.alpha = 0.5F
         }
     }
 
     private fun setSellButton(boolean: Boolean) {
-        btn_Sell_Cambio_Screen.isEnabled = boolean
+        sellCambioScreenBtn.isEnabled = boolean
         if (boolean) {
-            btn_Sell_Cambio_Screen.alpha = 1F
+            sellCambioScreenBtn.alpha = 1F
         } else {
-            btn_Sell_Cambio_Screen.alpha = 0.5F
+            sellCambioScreenBtn.alpha = 0.5F
         }
     }
 }
