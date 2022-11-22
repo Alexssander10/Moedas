@@ -106,7 +106,6 @@ class CambioScreen : AppCompatActivity() {
     }
 
     private fun editButtonConfigs(cambioMoedas: ModelCurrency) {
-
         amountEdt.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotBlank()) {
                 quantidade = text.toString().toInt()
