@@ -25,7 +25,16 @@ class HomeScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen)
 
-        viewModelCurrency = ViewModelProvider(this, ViewModelFactory(RepositoryCurrencies()))[ViewModelCurrency::class.java]
+        initViewModel()
+
+    }
+
+    private fun initViewModel() {
+
+        viewModelCurrency = ViewModelProvider(
+            this,
+            ViewModelFactory(RepositoryCurrencies())
+        )[ViewModelCurrency::class.java]
 
         viewModelCurrency.coinList.observe(this) {
             currencyAdapter.refresh(it)
@@ -37,7 +46,6 @@ class HomeScreen : AppCompatActivity() {
         viewModelCurrency.errorTest.observe(this) {
             Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun recyclerViewConfig() {
@@ -51,5 +59,4 @@ class HomeScreen : AppCompatActivity() {
             }
         }
     }
-
 }

@@ -5,11 +5,9 @@ import com.example.moedas.retrofit.Retrofit
 
 class RepositoryCurrencies {
 
-    val  services = Retrofit().currenciesServiceRetrofit()
+    val services = Retrofit().currenciesServiceRetrofit()
 
     suspend fun loadCurrencies(): TiposMoedasApi {
-
         return services.MapperCurrencies()
     }
-
 }

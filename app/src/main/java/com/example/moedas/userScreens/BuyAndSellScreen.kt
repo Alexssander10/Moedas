@@ -36,13 +36,13 @@ class BuyAndSellScreen : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun toolbar(){
+    private fun toolbar() {
         txtToolbar = findViewById(R.id.txt_toolbar_BuyAndSell)
         val toolbarStatus = intent.getBooleanExtra("Compra", true)
-        if (toolbarStatus){
+        if (toolbarStatus) {
             txtToolbar.text = "Comprar"
-        } else{
-        txtToolbar.text = "Vender"
+        } else {
+            txtToolbar.text = "Vender"
         }
     }
 
@@ -52,8 +52,8 @@ class BuyAndSellScreen : AppCompatActivity() {
         cambioScreenBtn = findViewById(R.id.btn_back_Buy_And_Sell_Screen)
     }
 
-    private fun textViewConfigs(){
-        TextViewCompat.setAutoSizeTextTypeWithDefaults(successfullyTransactionMessageTxt,1)
+    private fun textViewConfigs() {
+        TextViewCompat.setAutoSizeTextTypeWithDefaults(successfullyTransactionMessageTxt, 1)
     }
 
     private fun finishTransaction() {
@@ -66,7 +66,11 @@ class BuyAndSellScreen : AppCompatActivity() {
                     .append("Parabéns \n Você acabou de $buyOrSell\n")
                     .append("$quantidade ${moeda?.isoMoeda} - ${moeda?.nameCurrency},\n")
                     .append("totalizando \n")
-                    .append("R$ ${totalTransaction.toBigDecimal().setScale(2, RoundingMode.HALF_UP)}")
+                    .append(
+                        "R$ ${
+                            totalTransaction.toBigDecimal().setScale(2, RoundingMode.HALF_UP)
+                        }"
+                    )
                     .toString()
                 successfullyTransactionMessageTxt.text = it
             }
@@ -75,7 +79,7 @@ class BuyAndSellScreen : AppCompatActivity() {
         }
     }
 
-    private fun buttonBackToHome(cambioMoedas: ModelCurrency?){
+    private fun buttonBackToHome(cambioMoedas: ModelCurrency?) {
         homeScreenBtn.contentDescription = "Retorno à Home Screen"
         homeScreenBtn.setOnClickListener {
             Intent(this, HomeScreen::class.java).let {
@@ -86,7 +90,7 @@ class BuyAndSellScreen : AppCompatActivity() {
         }
     }
 
-    private fun buttonBackToCambio(){
+    private fun buttonBackToCambio() {
         cambioScreenBtn.contentDescription = "Retorno à Cambio Screen"
         cambioScreenBtn.setOnClickListener {
             finish()

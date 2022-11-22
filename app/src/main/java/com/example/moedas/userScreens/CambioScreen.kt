@@ -40,7 +40,7 @@ class CambioScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.cambio_screen)
 
-        linkID()
+        linkedComponents()
         returnSetOnClickListener()
         startViewModel()
         searchSelectedCurrencie()
@@ -53,8 +53,9 @@ class CambioScreen : AppCompatActivity() {
         amountEdt.text?.clear()
         updateCurrencie()
         cambioCurrencyModel?.let { informationOnScreen(it) }
-        cambioCurrencyModel?.let { setOnChangedListener(it)
-        searchSelectedCurrencie()
+        cambioCurrencyModel?.let {
+            editButtonConfigs(it)
+            searchSelectedCurrencie()
         }
     }
 
@@ -78,14 +79,14 @@ class CambioScreen : AppCompatActivity() {
         cambioCurrencyModel.let { coin ->
             if (coin != null) {
                 informationOnScreen(coin)
-                setOnChangedListener(coin)
+                editButtonConfigs(coin)
                 configBuyButton(coin)
                 configSellButton(coin)
             }
         }
     }
 
-    private fun linkID() {
+    private fun linkedComponents() {
         currencyTxv = findViewById(R.id.nameCurrency)
         priceVariationTxt = findViewById(R.id.textVariation)
         currencyPurchaseValueTxt = findViewById(R.id.textBuyCurrency)
@@ -104,7 +105,7 @@ class CambioScreen : AppCompatActivity() {
         }
     }
 
-    private fun setOnChangedListener(cambioMoedas: ModelCurrency) {
+    private fun editButtonConfigs(cambioMoedas: ModelCurrency) {
 
         amountEdt.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotBlank()) {
@@ -125,10 +126,11 @@ class CambioScreen : AppCompatActivity() {
         if (cambioCurrencyModel?.isoValueCurrencie == 0) {
             bindValues(cambioMoedas)
         }
-        coloV()
+        colorVariation()
         currencyTxv.text = "${cambioMoedas.isoMoeda} - ${cambioMoedas.nameCurrency}"
         priceVariationTxt.text = "${
-            cambioMoedas.currencyVariation.toString().toBigDecimal().setScale(2, RoundingMode.HALF_UP)
+            cambioMoedas.currencyVariation.toString().toBigDecimal()
+                .setScale(2, RoundingMode.HALF_UP)
         }%"
         if (cambioMoedas.currencyPurchase == null) {
             currencyPurchaseValueTxt.text = "Compra: R$ 0.00"
@@ -156,7 +158,7 @@ class CambioScreen : AppCompatActivity() {
             "${cambioMoedas.isoValueCurrencie} ${cambioMoedas.nameCurrency} em caixa"
     }
 
-    private fun coloV() {
+    private fun colorVariation() {
         if (cambioCurrencyModel?.currencyVariation!! < 0) {
             priceVariationTxt.setTextColor(Color.RED)
         } else if (cambioCurrencyModel?.currencyVariation!! > 0) {

@@ -31,7 +31,7 @@ object SingletonValuesCurrencies {
         }
     }
 
-    fun afterLinkingValues(moeda: ModelCurrency){
+    fun afterLinkingValues(moeda: ModelCurrency) {
         when (moeda.isoMoeda) {
             "USD" -> USD = moeda.isoValueCurrencie
             "EUR" -> EUR = moeda.isoValueCurrencie
