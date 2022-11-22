@@ -3,7 +3,7 @@ package com.example.moedas.viewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.moedas.model.ModelCurrency
 import com.example.moedas.repository.RepositoryCurrencies
-import com.example.moedas.utilityFunctions.UtilityFunctions.mapeiaNome
+import com.example.moedas.utilityFunctions.UtilityFunctions.mapperName
 import kotlinx.coroutines.launch
 
 
@@ -17,7 +17,7 @@ class ViewModelCurrency(private val repositoryCurrencies: RepositoryCurrencies) 
         launch {
             try {
                 val call = repositoryCurrencies.loadCurrencies()
-                val coinListLaunch = mapeiaNome(
+                val coinListLaunch = mapperName(
                     listOfNotNull(
                         call.currencies.USD,
                         call.currencies.EUR,

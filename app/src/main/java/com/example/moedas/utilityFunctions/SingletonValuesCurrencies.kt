@@ -17,7 +17,6 @@ object SingletonValuesCurrencies {
     private var BTC = 1
 
     fun bindValues(moeda: ModelCurrency) {
-
         when (moeda.isoMoeda) {
             "USD" -> moeda.isoValueCurrencie = USD
             "EUR" -> moeda.isoValueCurrencie = EUR
