@@ -1,8 +1,10 @@
 package com.example.moedas.userScreens
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -19,7 +21,10 @@ import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.buyOrSell
 import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.walletValue
 import com.example.moedas.viewModel.ViewModelCurrency
 import com.example.moedas.viewModel.ViewModelFactory
+import java.io.Serializable
 import java.math.RoundingMode
+
+
 
 class CambioScreen : AppCompatActivity() {
     private var cambioCurrencyModel: ModelCurrency? = null
@@ -66,6 +71,18 @@ class CambioScreen : AppCompatActivity() {
         }
     }
 
+//    inline fun <reified T: Serializable> Bundle.serializable(key: String): T? = when{
+//        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getSerializable(key, T::class.java)
+//        else -> @Suppress("DEPRECATION")getSerializable(key) as? T
+//    }
+
+//    fun <T : Serializable?> getSerializableExtra(activity: Activity, name: String, clazz: Class<T>): T {
+//        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+//            activity.intent.getSerializableExtra("coinData", clazz)!!
+//        else
+//            activity.intent.getSerializableExtra("coinData") as T
+//    }
+
     private fun startViewModel() {
         coinListViewModel =
             ViewModelProvider(
@@ -76,13 +93,11 @@ class CambioScreen : AppCompatActivity() {
 
     private fun searchSelectedCurrencie() {
         cambioCurrencyModel = intent.getSerializableExtra("coinData") as? ModelCurrency
-        cambioCurrencyModel.let { coin ->
-            if (coin != null) {
-                informationOnScreen(coin)
-                editButtonConfigs(coin)
-                configBuyButton(coin)
-                configSellButton(coin)
-            }
+        cambioCurrencyModel?.let { coin ->
+            informationOnScreen(coin)
+            editButtonConfigs(coin)
+            configBuyButton(coin)
+            configSellButton(coin)
         }
     }
 
@@ -131,6 +146,7 @@ class CambioScreen : AppCompatActivity() {
             cambioMoedas.currencyVariation.toString().toBigDecimal()
                 .setScale(2, RoundingMode.HALF_UP)
         }%"
+        //fazer uma função para deixar o código mais enxuto -> Sem códigos repetidos
         if (cambioMoedas.currencyPurchase == null) {
             currencyPurchaseValueTxt.text = "Compra: R$ 0.00"
         } else {

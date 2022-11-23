@@ -16,6 +16,8 @@ object SingletonValuesCurrencies {
     private var CNY = 2
     private var BTC = 1
 
+/// IMPLEMENTAR SINGLETON USANDO HASHMAP
+
     fun bindValues(moeda: ModelCurrency) {
         when (moeda.isoMoeda) {
             "USD" -> moeda.isoValueCurrencie = USD

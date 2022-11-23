@@ -32,7 +32,6 @@ class BuyAndSellScreen : AppCompatActivity() {
         toolbar()
         finishTransaction()
         textViewConfigs()
-
     }
 
     @SuppressLint("SetTextI18n")
