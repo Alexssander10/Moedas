@@ -7,7 +7,9 @@
     android:background="#000000"
     tools:context=".userScreens.HomeScreen">
 
-    <include layout="@layout/toolbar_home_screen"/>
+    <include
+        android:id="@+id/toolbarHomeScreen"
+        layout="@layout/toolbar_menu_screen"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/currencies_Rc_Home_Screen"

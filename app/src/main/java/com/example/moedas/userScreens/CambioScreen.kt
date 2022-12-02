@@ -1,32 +1,29 @@
 package com.example.moedas.userScreens
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.example.moedas.R
 import com.example.moedas.model.ModelCurrency
 import com.example.moedas.repository.RepositoryCurrencies
-import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.afterLinkingValues
-import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.bindValues
 import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.buyOrSell
+import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.takeValueHashMap
+import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.valueTransfModif
 import com.example.moedas.utilityFunctions.SingletonValuesCurrencies.walletValue
 import com.example.moedas.viewModel.ViewModelCurrency
 import com.example.moedas.viewModel.ViewModelFactory
-import java.io.Serializable
-import java.math.RoundingMode
+import java.text.NumberFormat
+import java.util.*
 
 
+class CambioScreen : BaseActivity() {
 
-class CambioScreen : AppCompatActivity() {
     private var cambioCurrencyModel: ModelCurrency? = null
     private lateinit var coinListViewModel: ViewModelCurrency
     private lateinit var currencyTxv: TextView
@@ -39,60 +36,54 @@ class CambioScreen : AppCompatActivity() {
     private lateinit var backCambioScreenBtn: Button
     private lateinit var buyCambioScreenBtn: Button
     private lateinit var sellCambioScreenBtn: Button
-    private var quantidade: Int = 0
+    private var amount: Int = 0
+    private val localBrazil = Locale("pt", "BR")
+    private val br: NumberFormat = NumberFormat.getCurrencyInstance(localBrazil)
+    private val brV: NumberFormat = NumberFormat.getCurrencyInstance(localBrazil)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.cambio_screen)
 
         linkedComponents()
-        returnSetOnClickListener()
+        configMenuToolbar(
+            findViewById(R.id.toolbarCambioScreen),
+            findViewById(R.id.TitleMenuToolbar),getString(R.string.exchangeToolbarTitle),
+            backCambioScreenBtn
+        )
         startViewModel()
-        searchSelectedCurrencie()
-        setBuyButton(false)
-        setSellButton(false)
+        searchSelectedCurrency()
+        setBuyAndSellDisabledButton(false, buyCambioScreenBtn)
+        setBuyAndSellDisabledButton(false, sellCambioScreenBtn)
     }
 
     override fun onResume() {
         super.onResume()
         amountEdt.text?.clear()
-        updateCurrencie()
+        updateCurrency()
         cambioCurrencyModel?.let { informationOnScreen(it) }
         cambioCurrencyModel?.let {
             editButtonConfigs(it)
-            searchSelectedCurrencie()
+            searchSelectedCurrency()
         }
     }
 
-    private fun updateCurrencie() {
+    private fun updateCurrency() {
         cambioCurrencyModel = intent.getSerializableExtra("coinData") as? ModelCurrency
         cambioCurrencyModel?.let { valueCoin ->
             informationOnScreen(valueCoin)
         }
     }
 
-//    inline fun <reified T: Serializable> Bundle.serializable(key: String): T? = when{
-//        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getSerializable(key, T::class.java)
-//        else -> @Suppress("DEPRECATION")getSerializable(key) as? T
-//    }
-
-//    fun <T : Serializable?> getSerializableExtra(activity: Activity, name: String, clazz: Class<T>): T {
-//        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-//            activity.intent.getSerializableExtra("coinData", clazz)!!
-//        else
-//            activity.intent.getSerializableExtra("coinData") as T
-//    }
-
     private fun startViewModel() {
-        coinListViewModel =
-            ViewModelProvider(
-                this,
-                ViewModelFactory(RepositoryCurrencies())
-            )[ViewModelCurrency::class.java]
+        coinListViewModel = ViewModelProvider(
+            this, ViewModelFactory(RepositoryCurrencies())
+        )[ViewModelCurrency::class.java]
     }
 
-    private fun searchSelectedCurrencie() {
-        cambioCurrencyModel = intent.getSerializableExtra("coinData") as? ModelCurrency
+    private fun searchSelectedCurrency() {
+        cambioCurrencyModel = intent.getSerializableExtra(getString(R.string.dadosDaMoeda)) as? ModelCurrency
         cambioCurrencyModel?.let { coin ->
             informationOnScreen(coin)
             editButtonConfigs(coin)
@@ -108,69 +99,59 @@ class CambioScreen : AppCompatActivity() {
         currencySaleValueTxt = findViewById(R.id.textSellCurrency)
         coinInCashAvailableTxv = findViewById(R.id.text_ValorEmCaixaCambioScreen)
         balanceAvailableInCashTxv = findViewById(R.id.text_SaldoDisponivelCambioScreen)
-        backCambioScreenBtn = findViewById(R.id.btn_back_cambio_screen)
+        backCambioScreenBtn = findViewById(R.id.btn_back_toolbars_screens)
         buyCambioScreenBtn = findViewById(R.id.btn_Buy_Cambio_Screen)
         sellCambioScreenBtn = findViewById(R.id.btn_Sell_Cambio_Screen)
         amountEdt = findViewById(R.id.edT_Quantidade)
     }
 
-    private fun returnSetOnClickListener() {
-        backCambioScreenBtn.setOnClickListener {
-            finish()
-        }
-    }
-
     private fun editButtonConfigs(cambioMoedas: ModelCurrency) {
         amountEdt.doOnTextChanged { text, _, _, _ ->
             if (text.toString().isNotBlank()) {
-                quantidade = text.toString().toInt()
-                if (quantidade > 0) {
-                    enableBuyButton(cambioMoedas, quantidade)
-                    enableSellButton(cambioMoedas, quantidade)
+                amount = text.toString().toInt()
+                if (amount > 0) {
+                    enableBuyButton(cambioMoedas, amount)
+                    enableSellButton(cambioMoedas, amount)
                 }
             } else {
-                setBuyButton(false)
-                setSellButton(false)
+                setBuyAndSellDisabledButton(false, buyCambioScreenBtn)
+                setBuyAndSellDisabledButton(false, sellCambioScreenBtn)
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun informationOnScreen(cambioMoedas: ModelCurrency) {
-        if (cambioCurrencyModel?.isoValueCurrencie == 0) {
-            bindValues(cambioMoedas)
-        }
+
         colorVariation()
-        currencyTxv.text = "${cambioMoedas.isoMoeda} - ${cambioMoedas.nameCurrency}"
-        priceVariationTxt.text = "${
-            cambioMoedas.currencyVariation.toString().toBigDecimal()
-                .setScale(2, RoundingMode.HALF_UP)
-        }%"
-        //fazer uma função para deixar o código mais enxuto -> Sem códigos repetidos
-        if (cambioMoedas.currencyPurchase == null) {
-            currencyPurchaseValueTxt.text = "Compra: R$ 0.00"
-        } else {
-            currencyPurchaseValueTxt.text = "Compra: R$" +
-                    "${
-                        cambioMoedas.currencyPurchase.toString().toBigDecimal()
-                            .setScale(2, RoundingMode.HALF_UP)
-                    }"
+        currencyTxv.text = buildString {
+            append(cambioMoedas.isoMoeda + " - " + cambioMoedas.nameCurrency)
         }
+        priceVariationTxt.text =
+            (brV.format(cambioMoedas.currencyVariation).replace("R$", "") + "%")
+
+        currencyPurchaseValueTxt.text = buildString {
+            append("Compra: " + br.format(cambioMoedas.currencyPurchase).toString())
+        }
+
         if (cambioMoedas.currencySaleValue == null) {
             currencySaleValueTxt.text = "Venda: R$ 0.00"
         } else {
-            currencySaleValueTxt.text = "Venda: R$" + "${
-                cambioMoedas.currencySaleValue.toString().toBigDecimal()
-                    .setScale(2, RoundingMode.HALF_UP)
-            }"
+            currencySaleValueTxt.text = buildString {
+                append("Venda: " + br.format(cambioMoedas.currencySaleValue).toString())
+            }
         }
-        balanceAvailableInCashTxv.text = "Saldo disponível: R$" +
-                "${
-                    walletValue.toString().toBigDecimal()
-                        .setScale(2, RoundingMode.HALF_UP)
-                }"
-        coinInCashAvailableTxv.text =
-            "${cambioMoedas.isoValueCurrencie} ${cambioMoedas.nameCurrency} em caixa"
+
+        balanceAvailableInCashTxv.text = buildString {
+            append("Saldo disponível: " + br.format(walletValue).toString())
+        }
+
+        coinInCashAvailableTxv.text = buildString {
+            append(takeValueHashMap(cambioMoedas.isoMoeda))
+            append(" ")
+            append(cambioMoedas.nameCurrency)
+            append(" em caixa")
+        }
     }
 
     private fun colorVariation() {
@@ -183,44 +164,47 @@ class CambioScreen : AppCompatActivity() {
         }
     }
 
-    private fun enableBuyButton(cambioMoedas: ModelCurrency, quantidade: Int) {
+    private fun enableBuyButton(cambioMoedas: ModelCurrency, amount: Int) {
         if (cambioMoedas.currencyPurchase != null) {
-            if (quantidade * cambioMoedas.currencyPurchase <= walletValue) {
-                setBuyButton(true)
-                buyCambioScreenBtn.contentDescription = "Botão Buy habilitado"
+            if (amount * cambioMoedas.currencyPurchase <= walletValue) {
+                setBuyAndSellDisabledButton(true, buyCambioScreenBtn)
+                buyCambioScreenBtn.contentDescription = "Botão comprar habilitado"
             } else {
-                setBuyButton(false)
+                setBuyAndSellDisabledButton(false, buyCambioScreenBtn)
                 buyCambioScreenBtn.contentDescription =
-                    "Botão Buy desabilitado devido ao saldo para esta operação"
+                    "Botão comprar desabilitado devido ao saldo para esta operação"
             }
         }
-
     }
 
-    private fun enableSellButton(cambioMoedas: ModelCurrency, quantidade: Int) {
+    private fun enableSellButton(cambioMoedas: ModelCurrency, amount: Int) {
         if (cambioMoedas.currencySaleValue != null) {
-            if (quantidade <= cambioMoedas.isoValueCurrencie) {
-                setSellButton(true)
-                sellCambioScreenBtn.contentDescription = "Botão Sell habilitado"
+            if (amount <= takeValueHashMap(cambioMoedas.isoMoeda)) {
+                setBuyAndSellDisabledButton(true, sellCambioScreenBtn)
+                sellCambioScreenBtn.contentDescription = "Botão vender habilitado"
             } else {
-                setSellButton(false)
+                setBuyAndSellDisabledButton(false, sellCambioScreenBtn)
                 sellCambioScreenBtn.contentDescription =
-                    "Botão Sell desabilitado, moedas insuficientes"
+                    "Botão vender desabilitado, moedas insuficientes"
             }
         }
     }
 
     private fun configBuyButton(cambioMoedas: ModelCurrency) {
         buyCambioScreenBtn.setOnClickListener {
-            cambioMoedas.isoValueCurrencie += quantidade
-            afterLinkingValues(cambioMoedas)
-            val totalPurchaseAmount = quantidade * cambioMoedas.currencyPurchase!!
+            valueTransfModif(cambioMoedas.isoMoeda,"Buy", amount)
+            val totalPurchaseAmount = amount * cambioMoedas.currencyPurchase!!
             walletValue -= totalPurchaseAmount
             Intent(this, BuyAndSellScreen::class.java).let {
-                it.putExtra("Compra", true)
+                //Compra = define na toolbar se é compra ou venda
+                it.putExtra(getString(R.string.Buy), true)
+                //comprar = define se a operação compra ou venda
                 buyOrSell = "comprar"
-                it.putExtra("coin", cambioMoedas)
-                it.putExtra("value", quantidade)
+                //coin = passa a moeda
+                it.putExtra(getString(R.string.currencyData), cambioMoedas)
+                //value = quantidade de compra da moeda
+                it.putExtra(getString(R.string.coinQuantity), amount)
+                //successfulTransaction = valor da compra/venda total
                 it.putExtra("successfulTransaction", totalPurchaseAmount)
                 startActivity(it)
             }
@@ -229,36 +213,26 @@ class CambioScreen : AppCompatActivity() {
 
     private fun configSellButton(cambioMoedas: ModelCurrency) {
         sellCambioScreenBtn.setOnClickListener {
-            cambioMoedas.isoValueCurrencie -= quantidade
-            afterLinkingValues(cambioMoedas)
-            val totalSalesAmount = quantidade * cambioMoedas.currencySaleValue!!
+            valueTransfModif(cambioMoedas.isoMoeda,"Sell", amount)
+            val totalSalesAmount = amount * cambioMoedas.currencySaleValue!!
             walletValue += totalSalesAmount
             Intent(this, BuyAndSellScreen::class.java).let {
-                it.putExtra("Compra", false)
+                it.putExtra(getString(R.string.Buy), false)
                 buyOrSell = "vender"
-                it.putExtra("coin", cambioMoedas)
-                it.putExtra("value", quantidade)
+                it.putExtra(getString(R.string.currencyData), cambioMoedas)
+                it.putExtra(getString(R.string.coinQuantity), amount)
                 it.putExtra("successfulTransaction", totalSalesAmount)
                 startActivity(it)
             }
         }
     }
 
-    private fun setBuyButton(boolean: Boolean) {
-        buyCambioScreenBtn.isEnabled = boolean
+    private fun setBuyAndSellDisabledButton(boolean: Boolean, activateOrDeactivate: Button) {
+        activateOrDeactivate.isEnabled = boolean
         if (boolean) {
-            buyCambioScreenBtn.alpha = 1F
+            activateOrDeactivate.alpha = 1F
         } else {
-            buyCambioScreenBtn.alpha = 0.5F
-        }
-    }
-
-    private fun setSellButton(boolean: Boolean) {
-        sellCambioScreenBtn.isEnabled = boolean
-        if (boolean) {
-            sellCambioScreenBtn.alpha = 1F
-        } else {
-            sellCambioScreenBtn.alpha = 0.5F
+            activateOrDeactivate.alpha = 0.5F
         }
     }
 }

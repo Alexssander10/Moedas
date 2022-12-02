@@ -9,31 +9,10 @@
 
     <include
         android:id="@+id/toolbar_buy_and_sell"
-        layout="@layout/toolbar_buy_and_sell_screen"
+        layout="@layout/toolbar_menu_screen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_back_Buy_And_Sell_Screen"
-        android:layout_width="128dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginEnd="283dp"
-        android:background="@color/black"
-        android:drawableStart="@drawable/button_back_cambio_screen"
-        android:focusable="true"
-        android:fontFamily="@font/helvetica"
-        android:text="@string/cambio"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="17sp"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar_buy_and_sell"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar_buy_and_sell"
-        app:layout_constraintHorizontal_bias="0.062"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txT_Congratulation"
@@ -63,7 +42,7 @@
         android:layout_marginTop="567dp"
         android:layout_marginBottom="40dp"
         android:fontFamily="@font/arial"
-        android:text="HOME"
+        android:text="@string/homeBSScreen"
         android:background="@drawable/card_button_buy_and_sell_screen"
         android:textColor="@color/white"
         android:textSize="22sp"

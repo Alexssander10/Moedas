@@ -7,4 +7,20 @@
     <string name="cambio">Câmbio</string>
     <string name="informacoes_da_moeda_currency_information">INFORMAÇÕES DA MOEDA. Currency information</string>
     <string name="home">HOME</string>
+    <string name="homeBSScreen">HOME</string>
+    <string name="venderBSScreen">Vender</string>
+    <string name="cambio_Cscreen">Câmbio</string>
+    <string name="moedas_back_CambioScreentohome">Moedas</string>
+    <string name="moedas_ToolbarTextHome">Moedas</string>
+    <string name="base_activity">Base Activity</string>
+    <string name="dadosDaMoeda">coinData</string>
+    <string name="currenciesToolbarTitleMoedas">Moedas</string>
+    <string name="exchangeToolbarTitle">Câmbio</string>
+    <string name="coinValueOnReturn">ValorDaMoedaParaRetorno</string>
+    <string name="currencyData">DadosDaMoeda</string>
+    <string name="compra">Compra</string>
+    <string name="Buy">Compra</string>
+    <string name="coinQuantity">QuantidadeDaMoeda</string>
+    <string name="TransaçãoBemSucedida">TransaçãoBemSucedida</string>
+    <!--<string name="valueCoinHome">Valor da moeda para a próxima tela</string>-->
 </resources>

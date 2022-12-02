@@ -1,9 +1,11 @@
 package com.example.moedas.utilityFunctions
 
 import android.graphics.Color
+import android.widget.Button
 import android.widget.TextView
 import com.example.moedas.model.ModelCurrency
-import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
 
 object UtilityFunctions {
 
@@ -17,8 +19,12 @@ object UtilityFunctions {
         } else {
             currency_Percentage.setTextColor(Color.WHITE)
         }
-        val percentage = DecimalFormat("#.##")
-        currency_Percentage.text = percentage.format(moedas.currencyVariation).toString() + "%"
+        val localBrazil = Locale("pt", "BR")
+        val brV: NumberFormat = NumberFormat.getCurrencyInstance(localBrazil)
+        currency_Percentage.text = buildString {
+            append(brV.format(moedas.currencyVariation).replace("R$", ""))
+            append("%")
+        }
     }
 
     fun mapperName(moedas: List<ModelCurrency?>): List<ModelCurrency?> {

@@ -31,7 +31,6 @@ class AdapterCurrency(var onClickActionCard: (ModelCurrency) -> Unit = {}) :
     fun refresh(newList: List<ModelCurrency?>) {
         listOfCurrencies.clear()
         listOfCurrencies.addAll(newList)
-        notifyDataSetChanged()
     }
 
 }

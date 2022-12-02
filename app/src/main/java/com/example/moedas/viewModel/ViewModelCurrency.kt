@@ -3,6 +3,7 @@ package com.example.moedas.viewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.moedas.model.ModelCurrency
 import com.example.moedas.repository.RepositoryCurrencies
+import com.example.moedas.utilityFunctions.UtilityFunctions
 import com.example.moedas.utilityFunctions.UtilityFunctions.mapperName
 import kotlinx.coroutines.launch
 

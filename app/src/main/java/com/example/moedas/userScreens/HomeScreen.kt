@@ -1,7 +1,6 @@
 package com.example.moedas.userScreens
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +12,8 @@ import com.example.moedas.adapter.AdapterCurrency
 import com.example.moedas.repository.RepositoryCurrencies
 import com.example.moedas.viewModel.ViewModelFactory
 
-class HomeScreen : AppCompatActivity() {
+
+class HomeScreen : BaseActivity() {
 
     private lateinit var recyclerViewCurrencies: RecyclerView
     private lateinit var viewModelCurrency: ViewModelCurrency
@@ -24,13 +24,15 @@ class HomeScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_screen)
-
         initViewModel()
-
+        configMenuToolbar(
+            findViewById(R.id.toolbarHomeScreen),
+            findViewById(R.id.TitleMenuToolbar),getString(R.string.currenciesToolbarTitleMoedas),
+            findViewById(R.id.btn_back_toolbars_screens)
+        )
     }
 
     private fun initViewModel() {
-
         viewModelCurrency = ViewModelProvider(
             this,
             ViewModelFactory(RepositoryCurrencies())
@@ -44,7 +46,7 @@ class HomeScreen : AppCompatActivity() {
         viewModelCurrency.statusCurrencies()
 
         viewModelCurrency.errorTest.observe(this) {
-            Toast.makeText(applicationContext, it, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -54,7 +56,8 @@ class HomeScreen : AppCompatActivity() {
         recyclerViewCurrencies.adapter = currencyAdapter
         currencyAdapter.onClickActionCard = {
             Intent(this, CambioScreen::class.java).apply {
-                putExtra("coinData", it)
+                //coinData = passa os dados da moeda
+                putExtra(getString(R.string.dadosDaMoeda), it)
                 startActivity(this)
             }
         }
